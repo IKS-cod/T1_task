@@ -20,14 +20,14 @@ public class ExecutionTimeAspect {
         Object result;
         try {
             result = joinPoint.proceed();
+            return result;
         } catch (Throwable ex) {
             throw new ExecutionTimeAspectException();
+        }finally {
+            long endTime = System.currentTimeMillis();
+            logger.info("Method {} executed in {} ms",
+                    joinPoint.getSignature().getName(),
+                    (endTime - startTime));
         }
-
-        long endTime = System.currentTimeMillis();
-        logger.info("Method {} executed in {} ms",
-                joinPoint.getSignature().getName(),
-                (endTime - startTime));
-        return result;
     }
 }
