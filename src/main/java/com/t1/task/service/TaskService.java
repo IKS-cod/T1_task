@@ -5,7 +5,6 @@ import com.t1.task.aspect.annotation.CustomExecutionTime;
 import com.t1.task.aspect.annotation.CustomLoggingFinishedMethod;
 import com.t1.task.aspect.annotation.CustomLoggingStartMethod;
 import com.t1.task.dto.TaskDto;
-import com.t1.task.dto.TaskWithoutIdDto;
 import com.t1.task.exception.TaskNotFoundException;
 import com.t1.task.mapper.TaskMapper;
 import com.t1.task.model.Task;
@@ -29,11 +28,11 @@ public class TaskService {
     @CustomLoggingStartMethod
     @CustomLoggingFinishedMethod
     @CustomExecutionTime
-    public TaskWithoutIdDto createTask(TaskWithoutIdDto taskWithoutIdDto) {
-        Task taskForDb = taskMapper.toTask(taskWithoutIdDto);
+    public TaskDto createTask(TaskDto taskDto) {
+        Task taskForDb = taskMapper.toTask(taskDto);
         taskForDb.setId(null);
         Task taskSaveInDb = taskRepository.save(taskForDb);
-        return taskMapper.toTaskWithoutIdDto(taskSaveInDb);
+        return taskMapper.toTaskDto(taskSaveInDb);
     }
 
     @CustomLoggingStartMethod
@@ -50,12 +49,12 @@ public class TaskService {
     @CustomLoggingFinishedMethod
     @CustomExceptionHandling
     @CustomExecutionTime
-    public void updateTask(long id, TaskWithoutIdDto taskWithoutIdDto) {
+    public void updateTask(long id, TaskDto taskDto) {
         Task taskFromDb = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found with ID: " + id));
-        taskFromDb.setTitle(taskWithoutIdDto.getTitle());
-        taskFromDb.setDescription(taskWithoutIdDto.getDescription());
-        taskFromDb.setUserId(taskWithoutIdDto.getUserId());
+        taskFromDb.setTitle(taskDto.getTitle());
+        taskFromDb.setDescription(taskDto.getDescription());
+        taskFromDb.setUserId(taskDto.getUserId());
         taskRepository.save(taskFromDb);
     }
 

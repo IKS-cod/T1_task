@@ -1,7 +1,6 @@
 package com.t1.task.controller;
 
 import com.t1.task.dto.TaskDto;
-import com.t1.task.dto.TaskWithoutIdDto;
 import com.t1.task.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,8 @@ public class TaskController {
 
     @PostMapping
     @Operation(summary = "Создание новой задачи")
-    public TaskWithoutIdDto createTask(@RequestBody TaskWithoutIdDto taskWithoutIdDto) {
-        return taskService.createTask(taskWithoutIdDto);
+    public TaskDto createTask(@RequestBody TaskDto taskDto) {
+        return taskService.createTask(taskDto);
     }
 
     @GetMapping("/{id}")
@@ -31,8 +30,8 @@ public class TaskController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Обновление данных задачи по ID")
-    public void updateTask(@PathVariable long id, @RequestBody TaskWithoutIdDto taskWithoutIdDto) {
-        taskService.updateTask(id, taskWithoutIdDto);
+    public void updateTask(@PathVariable long id, @RequestBody TaskDto taskDto) {
+        taskService.updateTask(id, taskDto);
     }
 
     @DeleteMapping("/{id}")
