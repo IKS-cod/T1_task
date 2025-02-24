@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: task
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tw2
+    username: student
+    password: chocolatefrog
+
+  jpa:
+    hibernate:
+      ddl-auto: update
