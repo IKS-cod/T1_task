@@ -1,12 +1,44 @@
 spring:
+
   application:
     name: task
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/tw2
+    url: jdbc:postgresql://localhost:5432/student
     username: student
     password: chocolatefrog
 
   jpa:
     hibernate:
-      ddl-auto: update
+     ddl-auto: update
+
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    protocol: smtps
+    username:
+    password:
+    toEmail:
+    fromEmail:
+
+t1:
+  scan-path: com.t1.task
+  kafka:
+    bootstrap:
+      server: localhost:9092
+    consumer:
+      group-id: t1-demo
+      mex.poll.records: 10
+    producer:
+      enable: true
+    topic:
+      task_update: t1_task_update
+      client_id_registered: t1_demo_client_registered
+    listener:
+      poll-timeout: 1000
+
+
+
+
+
+
