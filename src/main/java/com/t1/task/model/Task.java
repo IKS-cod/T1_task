@@ -1,5 +1,6 @@
 package com.t1.task.model;
 
+import com.t1.task.enums.TaskStatus;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -13,12 +14,15 @@ public class Task {
     private String title;
     private String description;
     private Long userId;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
-    public Task(Long id, String title, String description, Long userId) {
+    public Task(Long id, String title, String description, Long userId, TaskStatus status) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.userId = userId;
+        this.status = status;
     }
 
     public Task() {
@@ -56,17 +60,24 @@ public class Task {
         this.userId = userId;
     }
 
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(userId, task.userId);
+        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(userId, task.userId) && Objects.equals(status, task.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, userId);
+        return Objects.hash(id, title, description, userId, status);
     }
 
     @Override
@@ -76,6 +87,7 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", userId=" + userId +
+                ", status=" + status +
                 '}';
     }
 }

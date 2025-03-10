@@ -1,19 +1,22 @@
 package com.t1.task.dto;
 
+import com.t1.task.enums.TaskStatus;
+
 public class TaskDto {
     private Long id;
     private String title;
     private String description;
     private Long userId;
-
+    private TaskStatus status;
     public TaskDto() {
     }
 
-    public TaskDto(Long id, String title, String description, Long userId) {
+    public TaskDto(Long id, String title, String description, Long userId, TaskStatus status) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.userId = userId;
+        this.status = status;
     }
 
     public Long getId() {
@@ -48,6 +51,14 @@ public class TaskDto {
         this.userId = userId;
     }
 
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "TaskDto{" +
@@ -55,6 +66,7 @@ public class TaskDto {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", userId=" + userId +
+                ", status=" + status +
                 '}';
     }
 }
