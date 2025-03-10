@@ -15,6 +15,8 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class KafkaTaskConsumer {
     private static final Logger logger = LoggerFactory.getLogger(KafkaTaskConsumer.class);
@@ -30,14 +32,17 @@ public class KafkaTaskConsumer {
     @CustomLoggingStartMethod
     @CustomLoggingFinishedMethod
     @CustomExceptionHandling
-    public void listener(@Payload TaskUpdateStatusDto taskUpdateStatusDto,
-                         Acknowledgment ack,
-                         @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
-                         @Header(KafkaHeaders.RECEIVED_KEY) String key) {
+    public void listener(
+            @Payload List<TaskUpdateStatusDto> taskUpdateStatusDtoList,
+            Acknowledgment ack,
+            @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+            @Header(KafkaHeaders.RECEIVED_KEY) String key) {
         try {
-            String subject = "Изменение статуса Task c id= " + taskUpdateStatusDto.getId();
-            String text = "Статус Task стал - " + taskUpdateStatusDto.getStatus();
-            notificationService.sendSimpleEmail(subject, text);
+            taskUpdateStatusDtoList.forEach(taskUpdateStatusDto -> {
+                String subject = "Изменение статуса Task c id= " + taskUpdateStatusDto.getId();
+                String text = "Статус Task стал - " + taskUpdateStatusDto.getStatus();
+                notificationService.sendSimpleEmail(subject, text);
+            });
         } catch (Exception e) {
             throw new KafkaMessageProcessingException("Ошибка при обработке сообщения Kafka", e);
         } finally {

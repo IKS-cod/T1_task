@@ -1,8 +1,5 @@
 package com.t1.task.kafka;
 
-import com.t1.task.aspect.annotation.CustomExceptionHandling;
-import com.t1.task.aspect.annotation.CustomLoggingFinishedMethod;
-import com.t1.task.aspect.annotation.CustomLoggingStartMethod;
 import com.t1.task.exception.KafkaMessageSendingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +14,6 @@ public class KafkaTaskProducer {
     public KafkaTaskProducer(KafkaTemplate template) {
         this.template = template;
     }
-//    @CustomLoggingStartMethod
-//    @CustomLoggingFinishedMethod
-//    @CustomExceptionHandling
     public void sendTo(String topic, Object o) {
         try {
             template.send(topic, o);
