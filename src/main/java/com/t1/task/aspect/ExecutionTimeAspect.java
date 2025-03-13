@@ -1,6 +1,5 @@
 package com.t1.task.aspect;
 
-import com.t1.task.exception.ExecutionTimeAspectException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,20 +13,20 @@ public class ExecutionTimeAspect {
     private static final Logger logger = LoggerFactory.getLogger(ExecutionTimeAspect.class);
 
     @Around("@annotation(com.t1.task.aspect.annotation.CustomExecutionTime)")
-    public Object measureExecutionTime(ProceedingJoinPoint joinPoint) {
+    public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
 
-        Object result;
         try {
-            result = joinPoint.proceed();
+            Object result = joinPoint.proceed();
             return result;
         } catch (Throwable ex) {
-            throw new ExecutionTimeAspectException();
-        }finally {
+            logger.error("Exception in method " + joinPoint.getSignature().getName(), ex);
+            throw ex;
+        } finally {
             long endTime = System.currentTimeMillis();
-            logger.info("Method {} executed in {} ms",
-                    joinPoint.getSignature().getName(),
-                    (endTime - startTime));
+            long executionTime = endTime - startTime;
+            logger.info("Method {} executed in {} ms", joinPoint.getSignature().getName(), executionTime);
         }
     }
 }
+
